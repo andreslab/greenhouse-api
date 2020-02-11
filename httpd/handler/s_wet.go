@@ -3,6 +3,7 @@ package handler
 import (
 	"net/http"
 	"smartcrop/platform/wet"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -16,13 +17,18 @@ type WetPostRequest struct {
 //func wetPost(_wet *wet.Repo) gin.HandlerFunc {
 func WetPost(_wet wet.Setter) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		requestBody := WetPostRequest{}
-		c.Bind(&requestBody) //guarda en requestBody la data del body, debe tener la misma estructura
+		//requestBody := WetPostRequest{}
+		//c.Bind(&requestBody) //guarda en requestBody la data del body, debe tener la misma estructura
+
+		value := c.PostForm("value")
+		zone := c.PostForm("zone")
+		currentTime := time.Now()
+		today := currentTime.Format(time.RFC850)
 
 		item := wet.Item{
-			Value:   requestBody.Value,
-			Zone:    requestBody.Zone,
-			Created: "9-02-2020",
+			Value:   value,
+			Zone:    zone,
+			Created: today,
 		}
 
 		_wet.Add(item)
